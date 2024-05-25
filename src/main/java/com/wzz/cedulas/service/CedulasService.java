@@ -10,5 +10,5 @@ public interface CedulasService {
     void deleteCedula(Long id);
     void deleteAllCedulas();
     void updateCedula(CedulasDto cedulasDto);
-
+    CedulasDto getCedulaById(Long id);
 }

@@ -20,7 +20,9 @@ public class CedulasController {
     }
 
     @GetMapping("/all")
-    public List<CedulasDto> getAllCedulas() {
+    public List<CedulasDto> getAllCedulas(@RequestHeader(value = "X-Example-Header", required = false) String exampleHeader) {
+        // Use o valor do header conforme necessário
+        System.out.println("Received header: " + exampleHeader);
         return cedulasService.getAllCedulas();
     }
 

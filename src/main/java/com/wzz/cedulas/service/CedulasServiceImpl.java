@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class CedulasServiceImpl implements CedulasService {
-
 
     @Autowired
     private CedulasRepository cedulasRepository;
@@ -48,6 +48,12 @@ public class CedulasServiceImpl implements CedulasService {
         cedulasRepository.deleteAll();
     }
 
+    @Override
+    public CedulasDto getCedulaById(Long id) {
+        Optional<CedulasResource> cedulasResource = cedulasRepository.findById(id);
+        return cedulasResource.map(this::convertToDto).orElse(null);
+    }
+
     private CedulasDto convertToDto(CedulasResource cedulasResource) {
         CedulasDto cedulasDto = new CedulasDto();
         cedulasDto.setId(cedulasResource.getId());
@@ -56,10 +62,7 @@ public class CedulasServiceImpl implements CedulasService {
         cedulasDto.setTipoCedula(cedulasResource.getTipoCedula());
         cedulasDto.setPossuiNotaFiscal(cedulasResource.isPossuiNotaFiscal());
         cedulasDto.setDescricao(cedulasResource.getDescricao());
-
-        // Use CedulasEnum.getSymbolById to get the currency symbol
-        String symbol = CedulasEnum.getSymbolById(cedulasResource.getTipoCedula());
-        cedulasDto.setValorFormatado(symbol + " " + cedulasResource.getValor());
+        cedulasDto.setValorFormatado(cedulasDto.getValorFormatado());  // Utilize o método de formatação de CedulasDto
 
         return cedulasDto;
     }
@@ -71,11 +74,7 @@ public class CedulasServiceImpl implements CedulasService {
         cedulasResource.setValor(cedulasDto.getValor());
         cedulasResource.setTipoCedula(cedulasDto.getTipoCedula());
         cedulasResource.setPossuiNotaFiscal(cedulasDto.isPossuiNotaFiscal());
-
-        // Use CedulasEnum.getSymbolById to get the currency symbol
-        String symbol = CedulasEnum.getSymbolById(cedulasDto.getTipoCedula());
-        cedulasResource.setValorFormatado(symbol + " " + cedulasDto.getValor());
-
+        cedulasResource.setValorFormatado(cedulasDto.getValorFormatado());  // Utilize o método de formatação de CedulasDto
         cedulasResource.setDescricao(cedulasDto.getDescricao());
         return cedulasResource;
     }

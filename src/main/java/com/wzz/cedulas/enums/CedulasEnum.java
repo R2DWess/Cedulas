@@ -1,5 +1,7 @@
 package com.wzz.cedulas.enums;
 
+import java.util.NoSuchElementException;
+
 public enum CedulasEnum {
     REAL("Real", "BRL", "123456789", "R$"),
     DOLAR("Dolar", "USD", "987654321", "U$"),
@@ -8,13 +10,13 @@ public enum CedulasEnum {
     private final String descricao;
     private final String codigo;
     private final String id;
-    private final String symbol;
+    private final String simbolo;
 
-    CedulasEnum(String descricao, String codigo, String id, String symbol) {
+    CedulasEnum(String descricao, String codigo, String id, String simbolo) {
         this.descricao = descricao;
         this.codigo = codigo;
         this.id = id;
-        this.symbol = symbol;
+        this.simbolo = simbolo;
     }
 
     public String getDescricao() {
@@ -29,8 +31,8 @@ public enum CedulasEnum {
         return id;
     }
 
-    public String getSymbol() {
-        return symbol;
+    public String getSimbolo() {
+        return simbolo;
     }
 
     public static CedulasEnum findById(String id) {
@@ -39,15 +41,6 @@ public enum CedulasEnum {
                 return cedula;
             }
         }
-        return null; // Retorna null se o id não for encontrado
-    }
-
-    public static String getSymbolById(String id) {
-        CedulasEnum cedula = findById(id);
-        if (cedula != null) {
-            return cedula.getSymbol();
-        } else {
-            return ""; // Retorna uma string vazia ou algum valor padrão
-        }
+        throw new NoSuchElementException("No enum constant for id: " + id);
     }
 }
